@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Ridhi 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #ffd1e8, #ffc0cb);
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Falling flowers */
+.flower {
+  position: absolute;
+  top: -30px;
+  font-size: 22px;
+  animation: fall linear infinite;
+  opacity: 0.8;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Envelope */
+.envelope {
+  width: 330px;
+  height: 210px;
+  background: #ff8fc4;
+  border-radius: 18px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 55%;
+  background: #ff6fb3;
+  border-radius: 18px 18px 0 0;
+  transform-origin: top;
+  transition: transform 0.8s;
+}
+.envelope.open::before {
+  transform: rotateX(180deg);
+}
+.envelope h2 {
+  color: white;
+  z-index: 2;
+  font-size: 1.1rem;
+  padding: 10px;
+}
+
+.hidden { display: none; }
+
+/* Message boxes */
+.box {
+  background: white;
+  width: 340px;
+  padding: 28px;
+  border-radius: 25px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+  text-align: center;
+  z-index: 10;
+}
+
+button {
+  margin: 12px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.yes {
+  background: #ff4fa3;
+  color: white;
+}
+.no {
+  background: #ddd;
+  position: relative;
+}
+
+/* Crying emojis */
+.cry {
+  position: absolute;
+  top: -30px;
+  font-size: 28px;
+  animation: cryFall 2.5s linear infinite;
+}
+@keyframes cryFall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: red;
+  animation: confettiFall 3s linear infinite;
+}
+@keyframes confettiFall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Music button */
+.music {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background: #ff4fa3;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<div class="envelope" id="envelope">
+  <h2>Hey Ridhi 💗<br>This is for you<br>Please tap to open</h2>
+</div>
+
+<div class="box hidden" id="apology">
+  <p id="typeText"></p>
+  <button class="yes" onclick="forgive()">Forgive 💖</button>
+  <button class="no" id="noBtn">Don’t forgive 😶</button>
+</div>
+
+<div class="box hidden" id="final">
+  <p id="finalText"></p>
+</div>
+
+<div class="music" onclick="toggleMusic()">🎵 Play Music</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/10/30/audio_4e1dbfdc2b.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const envelope = document.getElementById("envelope");
+const apology = document.getElementById("apology");
+const finalBox = document.getElementById("final");
+const typeText = document.getElementById("typeText");
+const finalText = document.getElementById("finalText");
+const noBtn = document.getElementById("noBtn");
+const music = document.getElementById("bgMusic");
+
+envelope.onclick = () => {
+  envelope.classList.add("open");
+  setTimeout(() => {
+    envelope.classList.add("hidden");
+    apology.classList.remove("hidden");
+    typeWriter(
+      "Ridhi… 😔\nI’m really sorry.\nYou mean a lot to me.\nPlease forgive me 💔"
+    );
+  }, 700);
+};
+
+function forgive() {
+  apology.classList.add("hidden");
+  finalBox.classList.remove("hidden");
+  typeWriterFinal(
+    "Thank you Ridhi 🫶\nI’m honestly so grateful to have you back\nas my bestie forever 💕"
+  );
+  confettiBoom();
+}
+
+function typeWriter(text) {
+  let i = 0;
+  typeText.innerHTML = "";
+  const interval = setInterval(() => {
+    typeText.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, 40);
+}
+
+function typeWriterFinal(text) {
+  let i = 0;
+  finalText.innerHTML = "";
+  const interval = setInterval(() => {
+    finalText.innerHTML += text[i] === "\n" ? "<br>" : text[i];
+    i++;
+    if (i >= text.length) clearInterval(interval);
+  }, 40);
+}
+
+noBtn.onmouseover = () => {
+  const x = Math.random() * (window.innerWidth - 120);
+  const y = Math.random() * (window.innerHeight - 120);
+  noBtn.style.position = "absolute";
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  cryRain();
+};
+
+function cryRain() {
+  for (let i = 0; i < 10; i++) {
+    const c = document.createElement("div");
+    c.className = "cry";
+    c.innerHTML = "😭";
+    c.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2500);
+  }
+}
+
+function confettiBoom() {
+  for (let i = 0; i < 50; i++) {
+    const conf = document.createElement("div");
+    conf.className = "confetti";
+    conf.style.left = Math.random() * 100 + "vw";
+    conf.style.background = `hsl(${Math.random()*360},100%,60%)`;
+    document.body.appendChild(conf);
+    setTimeout(() => conf.remove(), 3000);
+  }
+}
+
+function toggleMusic() {
+  if (music.paused) {
+    music.play();
+  } else {
+    music.pause();
+  }
+}
+
+setInterval(() => {
+  const f = document.createElement("div");
+  f.className = "flower";
+  f.innerHTML = "🌸";
+  f.style.left = Math.random() * 100 + "vw";
+  f.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(f);
+  setTimeout(() => f.remove(), 7000);
+}, 350);
+</script>
+
+</body>
+</html>
